@@ -2,20 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-
-  const handleNameChange =  () => {
-    const names = ["Gayathri", "Ragupathi", "Yara"];
-    const int = Math.floor(Math.random() * 3);
-    return names[int];
-
-  }
-
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Hello {handleNameChange()}!
+          Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
           className="App-link"
