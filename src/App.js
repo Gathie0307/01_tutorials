@@ -1,5 +1,5 @@
 import React from 'react'
-import './App.css';
+import './index.css';
 import Content from './Content';
 import Header from './Header';
 import Footer from './Footer';
