@@ -10,7 +10,7 @@ function App() {
   const[items, setItems] = useState(JSON.parse(localStorage.getItem('shoppinglist'))
     );
     const[newItem, setNewItem] = useState('')
-
+    const[search, setSearch] = useState('');
     const handleCheck = (id) => {
       console.log(`key: ${id}`);
       const listItems = items.map((item) =>
