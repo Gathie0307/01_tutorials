@@ -14,12 +14,30 @@ function App() {
     const[items, setItems] = useState(JSON.parse(localStorage.getItem('shoppinglist')) || []);
     const[newItem, setNewItem] = useState('');
     const[search, setSearch] = useState('');
-
+    const[fetchError, setFetchError] = useState(null);
+    const[isLoading, setLoading] = useState(true)
 
 
     useEffect(() => {
-      localStorage.setItem('shoppinglist', JSON.stringify(newItem))}, [items]
-    )
+     const fetchItems = async() => {
+        try{
+          const response = await fetch(API_URL);
+          if(!response.ok) throw Error("Did not recieve the expected data")
+          const listItems = await response.json();
+          console.log(listItems);
+          setItems(listItems);
+          setFetchError(null);
+        } catch(err) {
+          setFetchError(err.message)
+        } finally {
+          setLoading(false);
+        }
+     }
+     setTimeout(() => {
+      (async () => await fetchItems())();
+     }, 2000);
+
+     }, []);
 
     const handleCheck = (id) => {
       console.log(`key: ${id}`);
@@ -52,7 +70,11 @@ function App() {
       <Header title="Grocery List"/>
       <AddItem newItem={newItem} setNewItem={setNewItem} handleSubmit={handleSubmit} />
       <SearchItem search={search} setSearch={setSearch} />
-      <Content items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))} handleCheck={handleCheck} handleDelete={handleDelete} />
+      <main>
+      {isLoading && <p>Loading Items.....</p>}
+      {fetchError && <p style={{color: "red"}}>{`Error: ${fetchError}`}</p>}
+      {!isLoading && !fetchError && <Content items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))} handleCheck={handleCheck} handleDelete={handleDelete} />}
+      </main>
       <Footer length={items.length}/>
     </div>
   );
