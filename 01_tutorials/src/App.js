@@ -6,6 +6,7 @@ import Footer from './Footer';
 import {useState, useEffect} from 'react';
 import AddItem from './AddItem';
 import SearchItem  from './SearchItem';
+import apiRequest from './apiRequest';
 
 function App() {
 
@@ -57,6 +58,17 @@ function App() {
       const myNewItem = {id, checked: false, item}
       const listItems = [...items, myNewItem];
       setItems(listItems);
+
+      const postOptions = {
+        method: 'POST',
+        headers: {
+          'Content-type' : 'application/json'
+        },
+        body: JSON.stringify(myNewItem)
+      }
+
+      const result = await apiRequest(API_URL, postOptions);
+      if(result) setFetchError(result);
     }
     const handleSubmit = (e) => {
       e.preventDefault();
